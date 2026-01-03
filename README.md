@@ -15,7 +15,9 @@ PostgreSQL is a free and open source advanced relational database system that su
     - [DROP COLUMN](#drop-column)
     - [DELETE](#delete)
     - [DROP TABLE](#drop-table)
-- [Demo Database](./DEMO_DATABASE.md)
+    - [Demo Database](./DEMO_DATABASE.md)
+- [Syntax](#syntax)
+    - [Operators](#operators)
 
 # Version
 
@@ -196,3 +198,8 @@ Display Table:
 ```psql
 SELECT * FROM cars;
 ```
+
+# Syntax
+
+## Operators
+
