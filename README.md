@@ -1,5 +1,7 @@
 # PostgreSQL Tutorial
 
+A comprehensive guide and tutorial to postgresql.
+
 PostgreSQL is a free and open source advanced relational database system that supports both relational (SQL) and non-relational (JSON) queries.
 
 # Table of Contents
