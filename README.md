@@ -3,7 +3,10 @@
 PostgreSQL is a free and open source advanced relational database system that supports both relational (SQL) and non-relational (JSON) queries.
 
 # Table of Contents
-
+- [Version](#version)
+- [Database](#database)
+    - [CREATE TABLE](#create-table)
+    - [INSERT INTO](#insert-into)
 
 # Version
 
@@ -29,7 +32,7 @@ Display Table:
 SELECT * FROM cars;
 ```
 
-# INSERT INTO
+## INSERT INTO
 
 Insert Into Table:
 ```psql
