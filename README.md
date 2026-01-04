@@ -18,6 +18,9 @@ PostgreSQL is a free and open source advanced relational database system that su
     - [Demo Database](./DEMO_DATABASE.md)
 - [Syntax](#syntax)
     - [Operators](#operators)
+    - [SELECT](#select)
+    - [SELECT DISTINCT](#select-distinct)
+    - [WHERE](#where)
 
 # Version
 
@@ -202,4 +205,159 @@ SELECT * FROM cars;
 # Syntax
 
 ## Operators
+
+Here are the operators in the `WHERE` clause:
+- Equal to `=`
+- Less than `<`
+- Greater than `>`
+- Less than or equal to `<=`
+- Greater than or equal to `>=`
+- Not equal to `<>` or `!=`
+- Check if a value matches a pattern (case-sensitive) `LIKE`
+- Check if a value matches a pattern (case insensitive) `ILIKE`
+- Logical AND: `AND`
+- Logical OR: `OR`
+- Check if a value is between a range of values `IN`
+- Check if a value is between a range of values `BETWEEN`
+- Check if a value is NULL: `IS NULL`
+- Logical NOT: `NOT`
+
+### Equal To
+```psql
+SELECT * FROM cars
+WHERE brand = 'Volvo';
+```
+
+### Less Than
+```psql
+SELECT * FROM cars
+WHERE year < 1975;
+```
+
+### Greater Than
+```psql
+SELECT * FROM cars
+WHERE year > 1975;
+```
+
+### Less Than or Equal To
+```psql
+SELECT * FROM cars
+WHERE year <= 1975;
+```
+
+### Greater Than or Equal To
+```psql
+SELECT * FROM cars
+WHERE year >= 1975;
+```
+
+### Not Equal To
+```psql
+SELECT * FROM cars
+WHERE brand <> 'Volvo';
+```
+or
+```psql
+SELECT * FROM cars
+WHERE brand != 'Volvo';
+```
+
+### LIKE
+```psql
+SELECT * FROM cars
+WHERE model LIKE 'M%';
+```
+
+### ILIKE
+```psql
+SELECT * FROM cars
+WHERE model ILIKE 'm%';
+```
+
+### AND
+```psql
+SELECT * FROM cars
+WHERE brand = 'Volvo' AND year = 1968;
+```
+
+### OR
+```psql
+SELECT * FROM cars
+WHERE brand = 'Volvo' OR year = 1975;
+```
+
+### IN
+```psql
+SELECT * FROM cars
+WHERE brand IN ('Volvo', 'Mercedes', 'Ford');
+```
+
+### BETWEEN
+```psql
+SELECT * FROM cars
+WHERE year BETWEEN 1970 AND 1980;
+```
+
+### IS NULL
+```psql
+SELECT * FROM cars
+WHERE model IS NULL;
+```
+
+### NOT
+NOT LIKE:
+```psql
+SELECT * FROM cars
+WHERE brand NOT LIKE 'B%';
+```
+
+NOT ILIKE:
+```psql
+SELECT * FROM cars
+WHERE brand NOT ILIKE 'b%';
+```
+
+NOT IN:
+```psql
+SELECT * FROM cars
+WHERE brand NOT IN ('Volvo', 'Mercedes', 'Ford');
+```
+
+NOT BETWEEN
+```psql
+SELECT * FROM cars
+WHERE year NOT BETWEEN 1970 AND 1980;
+```
+
+IS NOT NULL
+```psql
+SELECT * FROM cars
+WHERE model IS NOT NULL;
+```
+
+## SELECT
+Select a column
+```psql
+SELECT customer_name, country FROM customers;
+```
+
+Select all columns
+```psql
+SELECT * FROM customers;
+```
+
+## SELECT DISTINCT
+
+Select distinct values from column
+```psql
+SELECT DISTINCT country FROM customers;
+```
+
+Count distinct values from column
+```psql
+SELECT COUNT(DISTINCT country) FROM customers;
+```
+
+## WHERE
 
