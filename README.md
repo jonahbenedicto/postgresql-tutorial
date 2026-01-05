@@ -21,6 +21,31 @@ PostgreSQL is a free and open source advanced relational database system that su
     - [SELECT](#select)
     - [SELECT DISTINCT](#select-distinct)
     - [WHERE](#where)
+    - [ORDER BY](#order-by)
+    - [LIMIT](#limit)
+    - [MIN and MAX](#min-and-max)
+    - [COUNT](#count)
+    - [SUM](#sum)
+    - [AVG](#avg)
+    - [LIKE](#like)
+    - [IN](#in)
+    - [BETWEEN](#between)
+    - [AS](#as)
+    - [Joins](#joins)
+    - [INNER JOIN](#inner-join)
+    - [LEFT JOIN](#left-join)
+    - [RIGHT JOIN](#right-join)
+    - [FULL JOIN](#full-join)
+    - [CROSS JOIN](#cross-join)
+    - [UNION](#union)
+    - [GROUP BY](#group-by)
+    - [HAVING](#having)
+    - [EXISTS](#exists)
+    - [ANY](#any)
+    - [ALL](#all)
+    - [CASE](#case)
+
+
 
 # Version
 
@@ -360,4 +385,269 @@ SELECT COUNT(DISTINCT country) FROM customers;
 ```
 
 ## WHERE
+
+`WHERE` is used to filter records that follow a specific condition.
+```psql
+SELECT * FROM customers
+WHERE city = 'London';
+```
+
+Text Fields and Numeric Fields
+```psql
+SELECT * FROM customers
+WHERE customer_id = 19;
+```
+
+Greater than
+```psql
+SELECT * FROM customers
+WHERE customer_id > 80;
+```
+
+## ORDER BY
+
+`ORDER BY` is used to sort data in ascending or descending order.
+```psql
+SELECT * FROM products
+ORDER BY price;
+```
+
+Descending Order:
+```psql
+SELECT * FROM products
+ORDER BY price DESC;
+```
+
+Sort alphabetically:
+```psql
+SELECT * FROM products
+ORDER BY product_name;
+```
+
+Sort alphabetically descending:
+```psql
+SELECT * FROM products
+ORDER BY product_name DESC;
+```
+
+## LIMIT
+
+`LIMIT` is used to limit the maximum number of records.
+```psql
+SELECT * FROM customers
+LIMIT 20;
+```
+
+`OFFSET` is used to specify where to start selecting records.
+```psql
+SELECT * FROM customers
+LIMIT 20 OFFSET 40;
+```
+
+## MIN and MAX
+
+`MIN` is used to get the smallest value of the selected columns.
+```psql
+SELECT MIN(price)
+FROM products;
+```
+
+`MAX` is used to get the largest value of the selected columns.
+```psql
+SELECT MAX(price)
+FROM products;
+```
+
+Set Column Name
+When `MIN` or `MAX` is used by default the columns will be named `min` and `max`.
+```psql
+SELECT MIN(price) AS lowest_price
+FROM products;
+```
+
+## COUNT
+`COUNT` is used to get the number of rows that matches a specific condition.
+```psql
+SELECT COUNT(customer_id)
+FROM customers;
+```
+
+## SUM
+`SUM` is used to get the total sum of a numeric column.
+```psql
+SELECT SUM(quantity)
+FROM order_details;
+```
+
+## AVG
+`AVG` is used to get the average value of a numeric column.
+```psql
+SELECT AVG(price)
+FROM products;
+```
+
+Specifying Decimal Places
+```psql
+SELECT AVG(price)::NUMERIC(10,2)
+FROM products;
+```
+
+## LIKE
+
+`LIKE` is used with `WHERE` to search for a specified pattern in a column.
+
+`%` is used to represent zero, one or multiple exact characters.
+`_` is used to represent one single wildcard character.
+
+
+To get the records that start with a specific letter or phrase:
+```psql
+SELECT * FROM customers
+WHERE customer_name LIKE 'A%';
+```
+
+To get the records that contain a specific letter or phrase:
+```psql
+SELECT * FROM customers
+WHERE customer_name LIKE '%A%';
+```
+
+`ILIKE` is the same as `LIKE` but is case-insensitive.
+
+To get records that ends with a specific letter or phrase:
+```psql
+SELECT * FROM customers
+WHERE customer_name LIKE '%en';
+```
+
+To get records that have specific characters and wildcard characters:
+```psql
+SELECT * FROM customers
+WHERE city LIKE 'L_nd__';
+```
+
+## IN
+
+`IN` is used with `WHERE` to get a list of values.
+```psql
+SELECT * FROM customers
+WHERE country IN ('Germany', 'France', 'UK');
+```
+
+`NOT IN` is used to get a list of values that are NOT any of the values in the list.
+```psql
+SELECT * FROM customers
+WHERE country NOT IN ('Germany', 'France', 'UK');
+```
+
+IN(SELECT)
+```psql
+SELECT * FROM customers
+WHERE customer_id IN (SELECT customer_id FROM orders);
+```
+
+NOT IN (SELECT)
+```psql
+SELECT * FROM customers
+WHERE customer_id NOT IN (SELECT customer_id FROM orders);
+```
+
+## BETWEEN
+
+`BETWEEN` is used to get values within a given range.
+```psql
+SELECT * FROM Products
+WHERE Price BETWEEN 10 AND 15;
+```
+
+Can be used with Text
+```psql
+SELECT * FROM Products
+WHERE product_name BETWEEN 'Pavlova' AND 'Tofu';
+```
+
+Can be used with ORDER BY
+```psql
+SELECT * FROM Products
+WHERE product_name BETWEEN 'Pavlova' AND 'Tofu'
+ORDER BY product_name;
+```
+
+Can be used with Dates
+```psql
+SELECT * FROM orders
+WHERE order_date BETWEEN '2023-04-12' AND '2023-05-05';
+```
+
+## AS
+`AS` is used for aliasing columns.
+```psql
+SELECT customer_id AS id
+FROM customers;
+```
+
+It is optional
+```psql
+SELECT customer_id id
+FROM customers;
+```
+
+Can be used to concatenate columns
+```psql
+SELECT product_name || ' ' || unit AS product
+FROM products;
+```
+
+Can add spaces to the alias
+```psql
+SELECT product_name AS "My Great Products"
+FROM products;
+```
+
+## Joins
+`JOIN` is used to combine two or more tables based on a related column between them.
+
+Example:
+Look at the `products` table:
+```
+ product_id |  product_name  | category_id
+------------+----------------+-------------
+         33 | Geitost        |           4
+         34 | Sasquatch Ale  |           1
+         35 | Steeleye Stout |           1
+         36 | Inlagd Sill    |           8
+```
+
+Look at the `categories` table:
+```psql
+ category_id | category_name
+-------------+----------------
+           1 | Beverages
+           2 | Condiments
+           3 | Confections
+           4 | Dairy Products
+```
+
+They can be combined into one table:
+```psql
+SELECT product_id, product_name, category_name
+FROM products
+INNER JOIN categories ON products.category_id = categories.category_id;
+```
+
+Result:
+```
+product_id |  product_name  | category_name
+------------+----------------+----------------
+         33 | Geitost        | Dairy Products
+         34 | Sasquatch Ale  | Beverages
+         35 | Steeleye Stout | Beverages
+         36 | Inlagd Sill    | Seafood
+```
+
+There are different types of joins:
+- INNER JOIN: Returns records that have matching values in both tables
+- LEFT JOIN: Returns all records from the left table, and the matched records from the right table
+- RIGHT JOIN: Returns all records from the right table, and the matched records from the left table
+- FULL JOIN: Returns all records when there is a match in either left or right table
 
