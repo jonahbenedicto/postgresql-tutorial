@@ -46,7 +46,6 @@ PostgreSQL is a free and open source advanced relational database system that su
     - [CASE](#case)
 
 
-
 # Version
 
 ```psql
@@ -650,4 +649,444 @@ There are different types of joins:
 - LEFT JOIN: Returns all records from the left table, and the matched records from the right table
 - RIGHT JOIN: Returns all records from the right table, and the matched records from the left table
 - FULL JOIN: Returns all records when there is a match in either left or right table
+
+# INNER JOIN
+`INNER JOIN` selects records that have matching values in both tables.
+
+Example:
+
+Look at the `testproducts` table:
+```
+ testproduct_id |      product_name      | category_id
+----------------+------------------------+-------------
+              1 | Johns Fruit Cake       |           3
+              2 | Marys Healthy Mix      |           9
+              3 | Peters Scary Stuff     |          10
+              4 | Jims Secret Recipe     |          11
+              5 | Elisabeths Best Apples |          12
+              6 | Janes Favorite Cheese  |           4
+              7 | Billys Home Made Pizza |          13
+              8 | Ellas Special Salmon   |           8
+              9 | Roberts Rich Spaghetti |           5
+            10 | Mias Popular Ice        |          14
+```
+
+Look at the `categories` table:
+```
+ category_id | category_name  |                       description
+-------------+----------------+------------------------------------------------------------
+           1 | Beverages      | Soft drinks, coffees, teas, beers, and ales
+           2 | Condiments     | Sweet and savory sauces, relishes, spreads, and seasonings
+           3 | Confections    | Desserts, candies, and sweet breads
+           4 | Dairy Products | Cheeses
+           5 | Grains/Cereals | Breads, crackers, pasta, and cereal
+           6 | Meat/Poultry   | Prepared meats
+           7 | Produce        | Dried fruit and bean curd
+           8 | Seafood        | Seaweed and fish
+```
+
+To combine them using `INNER JOIN`:
+```psql
+SELECT testproduct_id, product_name, category_name
+FROM testproducts
+INNER JOIN categories ON testproducts.category_id = categories.category_id;
+```
+
+Result:
+```
+ testproduct_id |      product_name      | category_name
+----------------+------------------------+----------------
+              1 | Johns Fruit Cake       | Confections
+              6 | Janes Favorite Cheese  | Dairy Products
+              8 | Ellas Special Salmon   | Seafood
+              9 | Roberts Rich Spaghetti | Grains/Cereals
+```
+
+# LEFT JOIN
+`LEFT JOIN` selects all records from the left table and the matching records from the right table.
+It will select all the records in the left table even the records that do not match in the right table.
+
+Look at the `testproducts` table:
+```
+ testproduct_id |      product_name      | category_id
+----------------+------------------------+-------------
+              1 | Johns Fruit Cake       |           3
+              2 | Marys Healthy Mix      |           9
+              3 | Peters Scary Stuff     |          10
+              4 | Jims Secret Recipe     |          11
+              5 | Elisabeths Best Apples |          12
+              6 | Janes Favorite Cheese  |           4
+              7 | Billys Home Made Pizza |          13
+              8 | Ellas Special Salmon   |           8
+              9 | Roberts Rich Spaghetti |           5
+            10 | Mias Popular Ice        |          14
+```
+
+Look at the `categories` table:
+```
+ category_id | category_name  |                       description
+-------------+----------------+------------------------------------------------------------
+           1 | Beverages      | Soft drinks, coffees, teas, beers, and ales
+           2 | Condiments     | Sweet and savory sauces, relishes, spreads, and seasonings
+           3 | Confections    | Desserts, candies, and sweet breads
+           4 | Dairy Products | Cheeses
+           5 | Grains/Cereals | Breads, crackers, pasta, and cereal
+           6 | Meat/Poultry   | Prepared meats
+           7 | Produce        | Dried fruit and bean curd
+           8 | Seafood        | Seaweed and fish
+```
+
+To combine them using `LEFT JOIN`:
+```psql
+SELECT testproduct_id, product_name, category_name
+FROM testproducts
+LEFT JOIN categories ON testproducts.category_id = categories.category_id;
+```
+
+Result:
+```
+ testproduct_id |      product_name      | category_name
+----------------+------------------------+----------------
+              1 | Johns Fruit Cake       | Confections
+              2 | Marys Healthy Mix      |
+              3 | Peters Scary Stuff     |
+              4 | Jims Secret Recipe     |
+              5 | Elisabeths Best Apples |
+              6 | Janes Favorite Cheese  | Dairy Products
+              7 | Billys Home Made Pizza |
+              8 | Ellas Special Salmon   | Seafood
+              9 | Roberts Rich Spaghetti | Grains/Cereals
+             10 | Mias Popular Ice       |
+```
+
+# RIGHT JOIN
+`RIGHT JOIN` selects all records from the right table and the matching records from the left table.
+It will select all the records in the right table even the records that do not match in the left table.
+
+Look at the `testproducts` table:
+```
+ testproduct_id |      product_name      | category_id
+----------------+------------------------+-------------
+              1 | Johns Fruit Cake       |           3
+              2 | Marys Healthy Mix      |           9
+              3 | Peters Scary Stuff     |          10
+              4 | Jims Secret Recipe     |          11
+              5 | Elisabeths Best Apples |          12
+              6 | Janes Favorite Cheese  |           4
+              7 | Billys Home Made Pizza |          13
+              8 | Ellas Special Salmon   |           8
+              9 | Roberts Rich Spaghetti |           5
+             10 | Mias Popular Ice       |          14
+```
+
+Look at the `categories` table:
+```
+ category_id | category_name  |                       description
+-------------+----------------+------------------------------------------------------------
+           1 | Beverages      | Soft drinks, coffees, teas, beers, and ales
+           2 | Condiments     | Sweet and savory sauces, relishes, spreads, and seasonings
+           3 | Confections    | Desserts, candies, and sweet breads
+           4 | Dairy Products | Cheeses
+           5 | Grains/Cereals | Breads, crackers, pasta, and cereal
+           6 | Meat/Poultry   | Prepared meats
+           7 | Produce        | Dried fruit and bean curd
+           8 | Seafood        | Seaweed and fish
+```
+
+To combine them using `RIGHT JOIN`:
+```psql
+SELECT testproduct_id, product_name, category_name
+FROM testproducts
+RIGHT JOIN categories ON testproducts.category_id = categories.category_id;
+```
+
+Result:
+```
+ testproduct_id |      product_name      | category_name
+----------------+------------------------+----------------
+              1 | Johns Fruit Cake       | Confections
+              6 | Janes Favorite Cheese  | Dairy Products
+              8 | Ellas Special Salmon   | Seafood
+              9 | Roberts Rich Spaghetti | Grains/Cereals
+                |                        | Condiments
+                |                        | Meat/Poultry
+                |                        | Beverages
+                |                        | Produce
+```
+
+# FULL JOIN
+`FULL JOIN` selects all records from both tables even if there is no match.
+
+Look at the `testproducts` table:
+```
+ testproduct_id |      product_name      | category_id
+----------------+------------------------+-------------
+              1 | Johns Fruit Cake       |           3
+              2 | Marys Healthy Mix      |           9
+              3 | Peters Scary Stuff     |          10
+              4 | Jims Secret Recipe     |          11
+              5 | Elisabeths Best Apples |          12
+              6 | Janes Favorite Cheese  |           4
+              7 | Billys Home Made Pizza |          13
+              8 | Ellas Special Salmon   |           8
+              9 | Roberts Rich Spaghetti |           5
+             10 | Mias Popular Ice       |          14
+```
+
+Look at the `categories` table:
+```
+ category_id | category_name  |                       description
+-------------+----------------+------------------------------------------------------------
+           1 | Beverages      | Soft drinks, coffees, teas, beers, and ales
+           2 | Condiments     | Sweet and savory sauces, relishes, spreads, and seasonings
+           3 | Confections    | Desserts, candies, and sweet breads
+           4 | Dairy Products | Cheeses
+           5 | Grains/Cereals | Breads, crackers, pasta, and cereal
+           6 | Meat/Poultry   | Prepared meats
+           7 | Produce        | Dried fruit and bean curd
+           8 | Seafood        | Seaweed and fish
+```
+
+To combine these tables using `FULL JOIN`:
+```psql
+SELECT testproduct_id, product_name, category_name
+FROM testproducts
+FULL JOIN categories ON testproducts.category_id = categories.category_id;
+```
+
+Result:
+```
+ testproduct_id |      product_name       | category_name
+----------------+-------------------------+----------------
+              1 | Johns Fruit Cake        | Confections
+              2 | Marys Healthy Mix       |
+              3 | Peters Scary Stuff      |
+              4 | Jims Secret Recipe      |
+              5 | Elisabeths Best Apples  |
+              6 | Janes Favorite Cheese   | Dairy Products
+              7 | Billys Home Made Pizza  |
+              8 | Ellas Special Salmon    | Seafood
+              9 | Roberts Rich Spaghetti  | Grains/Cereals
+             10 | Mias Popular Ice        |
+                |                         | Condiments
+                |                         | Meat/Poultry
+                |                         | Beverages
+                |                         | Produce
+```
+
+# CROSS JOIN
+`CROSS JOIN` selects all records from the left table with each record in the right table.
+
+Look at the `testproducts` table:
+```
+ testproduct_id |      product_name      | category_id
+----------------+------------------------+-------------
+              1 | Johns Fruit Cake       |           3
+              2 | Marys Healthy Mix      |           9
+              3 | Peters Scary Stuff     |          10
+              4 | Jims Secret Recipe     |          11
+              5 | Elisabeths Best Apples |          12
+              6 | Janes Favorite Cheese  |           4
+              7 | Billys Home Made Pizza |          13
+              8 | Ellas Special Salmon   |           8
+              9 | Roberts Rich Spaghetti |           5
+             10 | Mias Popular Ice       |          14
+```
+
+Look at the `categories` table:
+```
+ category_id | category_name  |                       description
+-------------+----------------+------------------------------------------------------------
+           1 | Beverages      | Soft drinks, coffees, teas, beers, and ales
+           2 | Condiments     | Sweet and savory sauces, relishes, spreads, and seasonings
+           3 | Confections    | Desserts, candies, and sweet breads
+           4 | Dairy Products | Cheeses
+           5 | Grains/Cereals | Breads, crackers, pasta, and cereal
+           6 | Meat/Poultry   | Prepared meats
+           7 | Produce        | Dried fruit and bean curd
+           8 | Seafood        | Seaweed and fish
+```
+
+To combine the tables using `CROSS JOIN`:
+```psql
+SELECT testproduct_id, product_name, category_name
+FROM testproducts
+CROSS JOIN categories;
+```
+
+Result:
+```
+ testproduct_id |      product_name      | category_name
+----------------+------------------------+----------------
+              1 | Johns Fruit Cake       | Beverages
+              1 | Johns Fruit Cake       | Condiments
+              1 | Johns Fruit Cake       | Confections
+              1 | Johns Fruit Cake       | Dairy Products
+              1 | Johns Fruit Cake       | Grains/Cereals
+              1 | Johns Fruit Cake       | Meat/Poultry
+              1 | Johns Fruit Cake       | Produce
+              1 | Johns Fruit Cake       | Seafood
+              2 | Marys Healthy Mix      | Beverages
+              2 | Marys Healthy Mix      | Condiments
+              2 | Marys Healthy Mix      | Confections
+              2 | Marys Healthy Mix      | Dairy Products
+              2 | Marys Healthy Mix      | Grains/Cereals
+              2 | Marys Healthy Mix      | Meat/Poultry
+              2 | Marys Healthy Mix      | Produce
+              2 | Marys Healthy Mix      | Seafood
+              3 | Peters Scary Stuff     | Beverages
+              3 | Peters Scary Stuff     | Condiments
+              3 | Peters Scary Stuff     | Confections
+              3 | Peters Scary Stuff     | Dairy Products
+              3 | Peters Scary Stuff     | Grains/Cereals
+              3 | Peters Scary Stuff     | Meat/Poultry
+              3 | Peters Scary Stuff     | Produce
+              3 | Peters Scary Stuff     | Seafood
+              4 | Jims Secret Recipe     | Beverages
+              4 | Jims Secret Recipe     | Condiments
+              4 | Jims Secret Recipe     | Confections
+              4 | Jims Secret Recipe     | Dairy Products
+              4 | Jims Secret Recipe     | Grains/Cereals
+              4 | Jims Secret Recipe     | Meat/Poultry
+              4 | Jims Secret Recipe     | Produce
+              4 | Jims Secret Recipe     | Seafood
+              5 | Elisabeths Best Apples | Beverages
+              5 | Elisabeths Best Apples | Condiments
+              5 | Elisabeths Best Apples | Confections
+              5 | Elisabeths Best Apples | Dairy Products
+              5 | Elisabeths Best Apples | Grains/Cereals
+              5 | Elisabeths Best Apples | Meat/Poultry
+              5 | Elisabeths Best Apples | Produce
+              5 | Elisabeths Best Apples | Seafood
+              6 | Janes Favorite Cheese  | Beverages
+              6 | Janes Favorite Cheese  | Condiments
+              6 | Janes Favorite Cheese  | Confections
+              6 | Janes Favorite Cheese  | Dairy Products
+              6 | Janes Favorite Cheese  | Grains/Cereals
+              6 | Janes Favorite Cheese  | Meat/Poultry
+              6 | Janes Favorite Cheese  | Produce
+              6 | Janes Favorite Cheese  | Seafood
+              7 | Billys Home Made Pizza | Beverages
+              7 | Billys Home Made Pizza | Condiments
+              7 | Billys Home Made Pizza | Confections
+              7 | Billys Home Made Pizza | Dairy Products
+              7 | Billys Home Made Pizza | Grains/Cereals
+              7 | Billys Home Made Pizza | Meat/Poultry
+              7 | Billys Home Made Pizza | Produce
+              7 | Billys Home Made Pizza | Seafood
+              8 | Ellas Special Salmon   | Beverages
+              8 | Ellas Special Salmon   | Condiments
+              8 | Ellas Special Salmon   | Confections
+              8 | Ellas Special Salmon   | Dairy Products
+              8 | Ellas Special Salmon   | Grains/Cereals
+              8 | Ellas Special Salmon   | Meat/Poultry
+              8 | Ellas Special Salmon   | Produce
+              8 | Ellas Special Salmon   | Seafood
+              9 | Roberts Rich Spaghetti | Beverages
+              9 | Roberts Rich Spaghetti | Condiments
+              9 | Roberts Rich Spaghetti | Confections
+              9 | Roberts Rich Spaghetti | Dairy Products
+              9 | Roberts Rich Spaghetti | Grains/Cereals
+              9 | Roberts Rich Spaghetti | Meat/Poultry
+              9 | Roberts Rich Spaghetti | Produce
+              9 | Roberts Rich Spaghetti | Seafood
+             10 | Mias Popular Ice       | Beverages
+             10 | Mias Popular Ice       | Condiments
+             10 | Mias Popular Ice       | Confections
+             10 | Mias Popular Ice       | Dairy Products
+             10 | Mias Popular Ice       | Grains/Cereals
+             10 | Mias Popular Ice       | Meat/Poultry
+             10 | Mias Popular Ice       | Produce
+             10 | Mias Popular Ice       | Seafood
+```
+
+# UNION
+`UNION` combines the result of two or more queries.
+
+```psql
+SELECT product_id, product_name
+FROM products
+UNION
+SELECT testproduct_id, product_name
+FROM testproducts
+ORDER BY product_id;
+```
+
+Use `UNION ALL` to keep duplicate values:
+
+Union Example:
+```psql
+SELECT product_id
+FROM products
+UNION
+SELECT testproduct_id
+FROM testproducts
+ORDER BY product_id;
+```
+
+Union All Example:
+```psql
+SELECT product_id
+FROM products
+UNION ALL
+SELECT testproduct_id
+FROM testproducts
+ORDER BY product_id;
+```
+
+# GROUP BY
+`GROUP BY` is used to group rows that have the same values into summary rows.
+`GROUP BY` is often used with aggregate functions such as `COUNT`, `MAX`, `MIN`, `SUM`, and `AVG` to group results into one or more columns.
+
+```psql
+SELECT COUNT(customer_id), country
+FROM customers
+GROUP BY country;
+```
+
+GROUP BY with JOIN
+```psql
+SELECT customers.customer_name, COUNT(orders.order_id)
+FROM orders
+LEFT JOIN customers ON orders.customer_id = customers.customer_id
+GROUP BY customer_name;
+```
+
+# HAVING
+`HAVING` was added to SQL because `WHERE` does not support aggregate functions.
+
+```psql
+SELECT COUNT(customer_id), country
+FROM customers
+GROUP BY country
+HAVING COUNT(customer_id) > 5;
+```
+
+# EXISTS
+`EXISTS` is used to determine the existence of any record in a subquery.
+```psql
+SELECT customers.customer_name
+FROM customers
+WHERE EXISTS (
+  SELECT order_id
+  FROM orders
+  WHERE customer_id = customers.customer_id
+);
+```
+
+`NOT EXISTS` Example:
+```psql
+SELECT customers.customer_name
+FROM customers
+WHERE NOT EXISTS (
+  SELECT order_id
+  FROM orders
+  WHERE customer_id = customers.customer_id
+);
+```
+
+# ANY
+
+
+
 
