@@ -1086,7 +1086,53 @@ WHERE NOT EXISTS (
 ```
 
 # ANY
+`ANY` allows you to perform a comparison between a single column value and a range of others.
+`ANY` returns a Boolean value as a result and TRUE if ANY of the sub query values meet the condition.
+```psql
+SELECT product_name
+FROM products
+WHERE product_id = ANY (
+  SELECT product_id
+  FROM order_details
+  WHERE quantity > 120
+);
+```
 
+# ALL
+`ALL` returns a Boolean value as a result, TRUE if ALL of the sub query values meet the condition and is used with SELECT, WHERE and HAVING statements.
+```psql
+SELECT product_name
+FROM products
+WHERE product_id = ALL (
+  SELECT product_id
+  FROM order_details
+  WHERE quantity > 10
+);
+```
 
+# CASE
+`CASE` expression goes through conditions and returns a value when the first condition is met.
+```psql
+SELECT product_name,
+CASE
+  WHEN price < 10 THEN 'Low price product'
+  WHEN price > 50 THEN 'High price product'
+ELSE
+  'Normal product'
+END
+FROM products;
+```
+
+You can add an alias.
+```psql
+SELECT product_name,
+CASE
+  WHEN price < 10 THEN 'Low price product'
+  WHEN price > 50 THEN 'High price product'
+ELSE
+  'Normal product'
+END AS "price category"
+FROM products;
+```
 
 
